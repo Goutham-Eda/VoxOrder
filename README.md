@@ -50,17 +50,17 @@ git clone https://github.com/YOUR_USERNAME/VoxOrder.git
 cd VoxOrder
 
 # Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install flask twilio spacy python-dotenv
 python -m spacy download en_core_web_sm
 ```
 
 ### Configuration
 
-Create a `.env` file in the project root:
+Edit `config/.env` with your credentials:
 
 ```bash
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -72,7 +72,7 @@ TWILIO_PHONE_NUMBER=+1234567890
 
 ```bash
 # Terminal 1 — Start the server
-python app.py
+python src/app.py
 
 # Terminal 2 — Expose to internet
 ngrok http 8080
@@ -103,26 +103,14 @@ Watch your terminal parse it in real time.
 
 ```
 VoxOrder/
-├── app.py                  # Main Flask application
-├── requirements.txt        # Python dependencies
+├── src/
+│   └── app.py              # Main Flask application
+├── config/
+│   └── .env                # API keys (not committed)
 ├── orders.db               # SQLite database (auto-created)
-├── .env                    # API keys (not committed)
-├── .env.example            # Template for environment variables
+├── .venv/                  # Python virtual environment
 ├── .gitignore
-├── documentation/
-│   ├── 01_Requirements/
-│   │   └── SRS.pdf
-│   ├── 02_Project_Management/
-│   │   └── Project_Plan.md
-│   ├── 03_Technical_Design/
-│   │   ├── System_Design_HLD.md
-│   │   ├── Database_Design.md
-│   │   └── API_Specification.md
-│   ├── 04_Implementation_Guides/
-│   │   ├── POC_Implementation_Guide.md
-│   │   └── MVP_Implementation_Guide.md
-│   └── 05_Testing_QA/
-│       └── Test_Plan.md
+├── LICENSE
 └── README.md
 ```
 
@@ -144,7 +132,7 @@ The POC ships with a sample Indian restaurant menu:
 | Lassi | 90 |
 | Gulab Jamun | 120 |
 
-To customise the menu, edit the `MENU` dictionary in `app.py`.
+To customise the menu, edit the `MENU` dictionary in `src/app.py`.
 
 ---
 
