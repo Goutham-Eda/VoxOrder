@@ -1,6 +1,8 @@
 # VoxOrder 🎙️
 
-**AI-Powered Phone Ordering System for Restaurants**
+**Overview: AI-Powered Phone Ordering System for Restaurants**
+
+AI-powered phone ordering system designed for restaurants and food service establishments. The system accepts incoming phone calls on the restaurant's existing number, processes orders using natural language processing, and integrates with existing point-of-sale (POS) and printing infrastructure.
 
 VoxOrder accepts incoming phone calls on a restaurant's existing number, processes orders through natural language conversation, and saves them to a database — operating 24/7 without human staff.
 
