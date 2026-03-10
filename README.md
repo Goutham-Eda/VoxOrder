@@ -54,7 +54,7 @@ TOTAL: ₹600
 
 ## 📣 Community Response
 
-VoxOrder's first demo post received **2,278 impressions** and validated the core problem — restaurant industry professionals confirmed missed calls during dinner rush is a real, unsolved revenue problem for small restaurants.
+VoxOrder's first demo post received **+4k impressions** and validated the core problem — restaurant industry professionals confirmed missed calls during dinner rush is a real, unsolved revenue problem for small restaurants.
 
 ---
 
