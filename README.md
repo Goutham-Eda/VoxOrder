@@ -1,11 +1,60 @@
-# VoxOrder
-
-## Overview
-AI-powered phone ordering system designed for restaurants and food service establishments. The system accepts incoming phone calls on the restaurant's existing number, processes orders using natural language processing, and integrates with existing point-of-sale (POS) and printing infrastructure.
+# VoxOrder 🎙️
 
 **AI-Powered Phone Ordering System for Restaurants**
 
 VoxOrder accepts incoming phone calls on a restaurant's existing number, processes orders through natural language conversation, and saves them to a database — operating 24/7 without human staff.
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)](https://flask.palletsprojects.com)
+[![Twilio](https://img.shields.io/badge/Twilio-Voice-red.svg)](https://twilio.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-POC%20Live-brightgreen.svg)]()
+
+---
+
+## 🚀 Live Demo
+
+**Real call → Real speech → Real parsed order → Real database record**
+
+![VoxOrder Demo](documents/demo_screenshot.png)
+
+**Test call 1:**
+```
+CALL FROM: +918639769076
+CUSTOMER SAID: I want a butter chicken and one garlic naan.
+PARSED ORDER: [{'item': 'butter chicken', 'qty': 1, 'price': 320},
+               {'item': 'garlic naan',    'qty': 1, 'price': 60}]
+TOTAL: ₹380
+```
+
+**Test call 2:**
+```
+CALL FROM: +918639769076
+CUSTOMER SAID: butter chicken and biryani
+PARSED ORDER: [{'item': 'butter chicken', 'qty': 1, 'price': 320},
+               {'item': 'biryani',        'qty': 1, 'price': 280}]
+TOTAL: ₹600
+```
+
+**Database output:**
+```json
+{
+  "id": 2,
+  "phone": "+918639769076",
+  "items": [
+    {"item": "butter chicken", "qty": 1, "price": 320},
+    {"item": "biryani",        "qty": 1, "price": 280}
+  ],
+  "total": 600.0,
+  "created_at": "2026-03-09T22:40:53.874756"
+}
+```
+
+---
+
+## 📣 Community Response
+
+VoxOrder's first demo post received **2,278 impressions** and validated the core problem — restaurant industry professionals confirmed missed calls during dinner rush is a real, unsolved revenue problem for small restaurants.
 
 ---
 
@@ -40,13 +89,13 @@ VoxOrder accepts incoming phone calls on a restaurant's existing number, process
 ### Prerequisites
 - Python 3.9+
 - Twilio account with a phone number (~$1/month)
-- ngrok or serveo account (free tier works)
+- ngrok (with authtoken) or serveo.net
 
 ### Installation
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/VoxOrder.git
+git clone https://github.com/Goutham-Eda/VoxOrder.git
 cd VoxOrder
 
 # Create virtual environment
@@ -54,13 +103,13 @@ python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
 # Install dependencies
-pip install flask twilio spacy python-dotenv
+pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 ```
 
 ### Configuration
 
-Edit `config/.env` with your credentials:
+Create a `.env` file in the project root:
 
 ```bash
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -74,7 +123,7 @@ TWILIO_PHONE_NUMBER=+1234567890
 # Terminal 1 — Start the server
 python src/app.py
 
-# Terminal 2 — Expose to internet
+# Terminal 2 — Expose to internet (pick one)
 ngrok http 8080
 # OR
 ssh -R 80:localhost:8080 serveo.net
@@ -105,10 +154,10 @@ Watch your terminal parse it in real time.
 VoxOrder/
 ├── src/
 │   └── app.py              # Main Flask application
-├── config/
-│   └── .env                # API keys (not committed)
-├── orders.db               # SQLite database (auto-created)
-├── .venv/                  # Python virtual environment
+├── docs/
+│   └── demo_screenshot.png # Live demo terminal output
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment variable template
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -149,17 +198,19 @@ To customise the menu, edit the `MENU` dictionary in `src/app.py`.
 
 ## 🗺️ Roadmap
 
-### ✅ POC (Current)
+### ✅ POC (Complete)
 - [x] Inbound call handling via Twilio
 - [x] Speech-to-text via Twilio `<Gather>`
 - [x] NLU — item and quantity extraction
 - [x] Order confirmation flow
 - [x] SQLite persistence
-- [x] End-to-end demo
+- [x] End-to-end demo with real calls
+- [x] 2,278 LinkedIn impressions — problem validated
 
-### 🔄 MVP (Next)
-- [ ] Google Cloud Speech-to-Text (streaming, higher accuracy)
-- [ ] PostgreSQL (production database)
+### 🔄 MVP (In Progress)
+- [ ] Google Cloud Speech-to-Text — better accuracy, Indian accent support
+- [ ] Sarvam AI — Hindi/Telugu language support
+- [ ] PostgreSQL — production database
 - [ ] Multi-item quantity parsing improvements
 - [ ] FastAPI migration
 - [ ] Docker containerisation
@@ -179,11 +230,12 @@ To customise the menu, edit the `MENU` dictionary in `src/app.py`.
 ## ⚠️ Known Limitations (POC)
 
 - Handles one call at a time (no concurrency)
-- English only
+- English only — Hindi/Telugu support planned via Sarvam AI
 - Basic fuzzy matching — uncommon phrasings may not parse
 - No payment processing (COD assumed)
-- Twilio trial requires verified caller numbers
-- ngrok free tier requires authtoken to avoid 403s
+- Twilio trial account requires verified caller numbers
+- ngrok free tier shows 403 without authtoken — add yours via `ngrok config add-authtoken YOUR_TOKEN`
+- **macOS users:** port 5000 is reserved by AirPlay receiver. App runs on port 8080 by default to avoid this conflict.
 
 ---
 
